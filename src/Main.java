@@ -26,6 +26,8 @@ public class Main {
         System.out.println("You are now listening " + itr.next().getTitle());
         showMenu();
 
+        boolean forward=true;
+
         while(true){
             int option = sc.nextInt();
             switch(option){
@@ -37,6 +39,32 @@ public class Main {
                     break;
                 case 2:
                     printList(playList);
+                    break;
+                case 3:
+                    if(!forward){
+                        if(itr.hasNext()) itr.next();
+                        else System.out.println("No Next Song");
+                    }
+                    if(!itr.hasNext()){
+                        System.out.println("You have reached the end of the playlist");
+                    }
+                    else{
+                        System.out.println("You are listening to " + itr.next());
+                    }
+                    forward=true;
+                    break;
+                case 4:
+                    if(forward){
+                        if(itr.hasPrevious()) itr.previous();
+                        else System.out.println("No Previous Song");
+                    }
+                    if(!itr.hasPrevious()){
+                        System.out.println("You have reached the start of the playlist");
+                    }
+                    else{
+                        System.out.println("You are listening to " + itr.previous());
+                    }
+                    forward=false;
                     break;
             }
         }
