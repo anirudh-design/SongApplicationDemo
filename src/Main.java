@@ -87,6 +87,7 @@ public class Main {
                 case 6:
                     if(forward) itr.remove();
                     else System.out.println("You have not started the playlist");
+                    break;
             }
         }
     }
