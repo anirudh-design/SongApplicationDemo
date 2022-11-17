@@ -24,16 +24,20 @@ public class Main {
     public static void play(LinkedList<Song> playList){
         Scanner sc=new Scanner(System.in);
         ListIterator<Song> itr=playList.listIterator();
-        if(!itr.hasNext()){
-            System.out.println("Playlist is empty");
-        }
-
-        System.out.println("You are now listening " + itr.next().getTitle());
+//        if(!itr.hasNext()){
+//            System.out.println("Playlist is empty");
+//        }
+//
+//        System.out.println("You are now listening " + itr.next().getTitle());
         showMenu();
 
         boolean forward=true;
 
         while(true){
+            if(playList.size()==0){
+                System.out.println("Playlist is empty");
+                return;
+            }
             int option = sc.nextInt();
             switch(option){
                 case 0:
@@ -46,7 +50,7 @@ public class Main {
                     printList(playList);
                     break;
                 case 3:
-                    if(!forward){
+                    if(!forward && itr.hasPrevious()){
                         if(itr.hasNext()) itr.next();
                     }
                     if(!itr.hasNext()){
@@ -85,8 +89,53 @@ public class Main {
                     }
                     break;
                 case 6:
-                    if(forward) itr.remove();
-                    else System.out.println("You have not started the playlist");
+                    try {
+                        if (!itr.hasPrevious()) throw new IllegalStateException();
+                        else if (forward){
+                            itr.remove();
+                            int x=sc.nextInt();
+                            if(x==3){
+                                if(!itr.hasNext()){
+                                    System.out.println("You have reached the end of the playlist");
+                                }
+                                else{
+                                    System.out.println("You are listening to " + itr.next());
+                                }
+                            }
+                            else if(x==4){
+                                forward=false;
+                                if(!itr.hasPrevious()){
+                                    System.out.println("You have reached the start of the playlist");
+                                }
+                                else{
+                                    System.out.println("You are listening to " + itr.previous());
+                                }
+                            }
+                        }
+                        else{
+                            itr.remove();
+                            int x=sc.nextInt();
+                            if(x==3){
+                                forward=true;
+                                if(!itr.hasNext()){
+                                    System.out.println("You have reached the end of the playlist");
+                                }
+                                else{
+                                    System.out.println("You are listening to " + itr.next());
+                                }
+                            }
+                            else if(x==4){
+                                if(!itr.hasPrevious()){
+                                    System.out.println("You have reached the start of the playlist");
+                                }
+                                else{
+                                    System.out.println("You are listening to " + itr.previous());
+                                }
+                            }
+                        }
+                    }catch(IllegalStateException e){
+                        System.out.println("You haven't started the playlist");
+                    }
                     break;
             }
         }
